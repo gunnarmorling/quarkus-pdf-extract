@@ -10,6 +10,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 
+import javax.ws.rs.BadRequestException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -17,6 +18,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
+import javax.ws.rs.core.Response.Status;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
@@ -28,9 +30,15 @@ public class PdfExtractionResource {
     @Path("/extract")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_OCTET_STREAM)
-    public Response extractTextFromPdf(@MultipartForm FormData myEntity) {
+    public Response extractTextFromPdf(@MultipartForm FormData formData) throws BadRequestException {
         try {
-            String text = getText(myEntity.getPdfFile());
+            if (formData.getPdfFile() == null || formData.getPdfFile().length() == 0) {
+                ResponseBuilder response = Response.status(Status.BAD_REQUEST);
+                response.header("Reason", "No PDF file was uploaded (use form parameter 'pdfFile')");
+                return response.build();
+            }
+
+            String text = getText(formData.getPdfFile());
 
             File temp = File.createTempFile("tempfile", ".tmp");
 
@@ -48,7 +56,15 @@ public class PdfExtractionResource {
     }
 
     static String getText(File pdfFile) throws IOException {
-        PDDocument doc = PDDocument.load(pdfFile);
-        return new PDFLayoutTextStripper().getText(doc);
+        PDDocument doc = null;
+        try {
+            doc = PDDocument.load(pdfFile);
+            return new PDFLayoutTextStripper().getText(doc);
+        }
+        finally {
+            if (doc != null) {
+                doc.close();
+            }
+        }
     }
 }
