@@ -12,10 +12,6 @@ import static org.hamcrest.Matchers.containsString;
 @QuarkusTest
 public class PdfExtractionResourceTest {
 
-    public PdfExtractionResourceTest() {
-    }
-
-
     @Test
     public void testExtractEndpoint() throws IOException {
 
