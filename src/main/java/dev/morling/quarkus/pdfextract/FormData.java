@@ -19,7 +19,7 @@ public class FormData {
         return pdfFile;
     }
 
-    @FormParam("uploadedFile")
+    @FormParam("pdfFile")
     @PartType("application/octet-stream")
     public void setPdfFile(File pdfFile) {
         this.pdfFile = pdfFile;

@@ -1,0 +1,15 @@
+<html>
+  <head>
+    <title>Quarkus PDF Extract</title>
+  </head>
+  <body>
+    <h1>Quarkus PDF Extract</h1>
+    <p>
+      Select a PDF file to extract text from.
+    </p>
+    <form enctype="multipart/form-data" method="post" action="/rest/extract">
+      <input name="pdfFile" type="file" accept="application/pdf" />
+      <input type="submit" value="submit" id="submit" />
+    </form>
+  </body>
+</html>

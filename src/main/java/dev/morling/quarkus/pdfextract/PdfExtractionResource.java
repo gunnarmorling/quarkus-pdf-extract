@@ -21,11 +21,11 @@ import javax.ws.rs.core.Response.ResponseBuilder;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
 
-@Path("/")
+@Path("/rest")
 public class PdfExtractionResource {
 
     @POST
-    @Path("extract")
+    @Path("/extract")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_OCTET_STREAM)
     public Response extractTextFromPdf(@MultipartForm FormData myEntity) {

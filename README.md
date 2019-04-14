@@ -19,15 +19,26 @@ Run the container:
 
     docker run -i --rm -p 8080:8080 -e PORT=8080 quarkus-examples/quarkus-pdf-export
 
+## Running in Dev Mode
+
+While working on the service, the Quarkus Dev Mode comes in handy:
+
+    ./mvnw compile quarkus:dev
+
+Modify source code and invoke the service again (see below), and it will automatically be re-compiled.
+
 ## Invoking the Service
 
 To invoke the service, e.g. use httpie like so (adjust the file name to a PDF on your hard disk):
 
-    http -f POST localhost:8080/extract uploadedFile@"/path/to/some/file.pdf" -d
+    http -f POST localhost:8080/rest/extract pdfFile@"/path/to/some/file.pdf" -d
 
 This will create a file _extracted.txt_ with the extracted text in the current directory.
 
-## Running on Google Cloud Run
+Alternatively, open http://localhost:8080 in your web browser, select a PDF file to upload and click "Submit".
+This returns a file with the extracted text which you can store to your hard disk.
+
+## Deploying to Google Cloud Run
 
 The Quarkus-built native binary is a perfect fit for Serverless environments such as Google Cloud Run.
 Follow the steps in the Google Cloud Run [documentation](https://cloud.google.com/run/docs/quickstarts/build-and-deploy)
