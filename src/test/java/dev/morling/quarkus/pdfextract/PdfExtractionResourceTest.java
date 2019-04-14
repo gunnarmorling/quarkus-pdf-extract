@@ -1,13 +1,14 @@
 package dev.morling.quarkus.pdfextract;
 
-import io.quarkus.test.junit.QuarkusTest;
-import io.restassured.internal.util.IOUtils;
-import org.junit.jupiter.api.Test;
+import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.containsString;
 
 import java.io.IOException;
 
-import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.containsString;
+import org.junit.jupiter.api.Test;
+
+import io.quarkus.test.junit.QuarkusTest;
+import io.restassured.internal.util.IOUtils;
 
 @QuarkusTest
 public class PdfExtractionResourceTest {
@@ -18,8 +19,8 @@ public class PdfExtractionResourceTest {
         final byte[] bytes = IOUtils.toByteArray(getClass().getResourceAsStream("/testfile.pdf"));
 
         given()
-                .multiPart("uploadedFile", "PDF file name", bytes)
-                .when().post("/extract")
+                .multiPart("pdfFile", "PDF file name", bytes)
+                .when().post("/rest/extract")
                 .then()
                 .statusCode(200)
                 .body(containsString("Quarkus"), containsString("rocks!"));
