@@ -14,7 +14,8 @@
 # docker run -i --rm -p 8080:8080 quarkus/getting-started
 #
 ###
-FROM registry.fedoraproject.org/fedora-minimal
+# Use the official Quarkus recommended image: https://quarkus.io/guides/building-native-image-guide
+FROM registry.access.redhat.com/ubi8/ubi-minimal
 WORKDIR /work/
 COPY target/*-runner /work/application
 RUN chmod 775 /work
